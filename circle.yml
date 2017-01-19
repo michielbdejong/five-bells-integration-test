@@ -1,4 +1,8 @@
 machine:
+  hosts:
+    wallet1.example: 127.0.0.1
+    wallet2.example: 127.0.0.1
+    wallet3.example: 127.0.0.1
   node:
     version: 6.9.1
 test:
@@ -12,3 +16,4 @@ deployment:
       # Push NPM package if not yet published
       - mv npmrc-env .npmrc
       - if [ $(npm show five-bells-integration-test version) != $(npm ls --depth=-1 2>/dev/null | head -1 | cut -f 1 -d " " | cut -f 2 -d @) ] ; then npm publish ; fi
+
