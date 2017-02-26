@@ -37,17 +37,29 @@ Promise.coroutine(function * () {
     code = code || (yield dependencies.install())
   }
   if (command === 'all' || command === 'test') {
-    code = code || (yield spawn(mocha, [
-      path.resolve(__dirname, '../tests/index.js'),
-      path.resolve(__dirname, '../tests/advanced.js'),
-      path.resolve(__dirname, '../tests/connector_first.js'),
-      path.resolve(__dirname, '../tests/ilp-kit.js'),
-      '--no-timeouts',
-      '-r', 'co-mocha'
-    ], {
-      cwd: dependencies.testDir,
-      stdio: 'inherit'
-    }))
+      if (command === 'test' && process.argv[3]) {
+        code = code || (yield spawn(mocha, [
+          path.resolve(__dirname, '../tests/' + process.argv[3] + '.js'),
+          '--no-timeouts',
+          '-r', 'co-mocha'
+        ], {
+          cwd: dependencies.testDir,
+          stdio: 'inherit'
+        }))
+      } else {
+        code = code || (yield spawn(mocha, [
+          path.resolve(__dirname, '../tests/index.js'),
+          path.resolve(__dirname, '../tests/advanced.js'),
+          path.resolve(__dirname, '../tests/routing.js'),
+          path.resolve(__dirname, '../tests/connector_first.js'),
+          path.resolve(__dirname, '../tests/ilp-kit.js'),
+          '--no-timeouts',
+          '-r', 'co-mocha'
+        ], {
+          cwd: dependencies.testDir,
+          stdio: 'inherit'
+        }))
+      }
   }
   process.exit(code)
 })().done()

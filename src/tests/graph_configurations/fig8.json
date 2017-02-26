@@ -1,0 +1,59 @@
+{
+  "num_ledgers": 8,
+  "edge_list_map": {
+    "imogen": [
+      {
+        "target": 4,
+        "source": 0
+      }
+    ],
+    "herbert": [
+      {
+        "target": 0,
+        "source": 7
+      }
+    ],
+    "gaiman": [
+      {
+        "target": 7,
+        "source": 6
+      }
+    ],
+    "fforde": [
+      {
+        "target": 6,
+        "source": 5
+      }
+    ],
+    "elison": [
+      {
+        "target": 5,
+        "source": 4
+      }
+    ],
+    "delany": [
+      {
+        "target": 4,
+        "source": 3
+      }
+    ],
+    "cline": [
+      {
+        "target": 3,
+        "source": 2
+      }
+    ],
+    "bujold": [
+      {
+        "target": 2,
+        "source": 1
+      }
+    ],
+    "adams": [
+      {
+        "target": 0,
+        "source": 1
+      }
+    ]
+  }
+}
