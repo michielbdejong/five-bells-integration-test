@@ -32,8 +32,8 @@ function * buildServiceGraph (serviceManager, graphConf) {
         const target = edge.target
         const sourceAddress = demoLedgerName(source)
         const targetAddress = demoLedgerName(target)
-        ledgerHosts[sourceAddress] = 'http://localhost:' + (3000 + source)
-        ledgerHosts[targetAddress] = 'http://localhost:' + (3000 + target)
+        ledgerHosts[sourceAddress] = 'http://localhost:' + (3001 + source)
+        ledgerHosts[targetAddress] = 'http://localhost:' + (3001 + target)
         if (!ledgerConnectors[sourceAddress]) ledgerConnectors[sourceAddress] = []
         ledgerConnectors[sourceAddress].push(connectorNames[i])
         if (!ledgerConnectors[targetAddress]) ledgerConnectors[targetAddress] = []
@@ -44,7 +44,7 @@ function * buildServiceGraph (serviceManager, graphConf) {
   }
   for (let i = 0; i < numLedgers; i++) {
     const ledger = demoLedgerName(i)
-    yield graph.startLedger(ledger, 3000 + i,
+    yield graph.startLedger(ledger, 3001 + i,
                             {recommendedConnectors: ledgerConnectors[ledger]})
   }
   yield graph.setupAccounts()
@@ -129,10 +129,10 @@ function * assertFullReachabilityAndQuietude (graphConfFilename, testThis, done,
 }
 
 describe('Routing', function () {
-  before(function * () {
+  before(function * () {})
+  beforeEach(function * () {
     services.killAll()
   })
-  beforeEach(function * () {})
   after(function () {
     services.killAll()
   })
@@ -141,7 +141,6 @@ describe('Routing', function () {
     it('4 node loop', function * (done) {
       yield assertFullReachabilityAndQuietude('loop4.json', this, done, 30000)
     })
-
     it('13 node loop', function * (done) {
       yield assertFullReachabilityAndQuietude('loop13.json', this, done, 45000)
     })
