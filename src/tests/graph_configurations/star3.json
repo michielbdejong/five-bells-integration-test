@@ -1,0 +1,23 @@
+{
+  "num_ledgers": 4,
+  "edge_list_map": {
+    "cline": [
+      {
+        "target": 0,
+        "source": 1
+      }
+    ],
+    "bujold": [
+      {
+        "target": 0,
+        "source": 2
+      }
+    ],
+    "adams": [
+      {
+        "target": 0,
+        "source": 3
+      }
+    ]
+  }
+}

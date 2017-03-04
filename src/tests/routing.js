@@ -32,8 +32,8 @@ function * buildServiceGraph (serviceManager, graphConf) {
         const target = edge.target
         const sourceAddress = demoLedgerName(source)
         const targetAddress = demoLedgerName(target)
-        ledgerHosts[sourceAddress] = 'http://localhost:' + (3001 + source)
-        ledgerHosts[targetAddress] = 'http://localhost:' + (3001 + target)
+        ledgerHosts[sourceAddress] = 'http://localhost:' + (3000 + source)
+        ledgerHosts[targetAddress] = 'http://localhost:' + (3000 + target)
         if (!ledgerConnectors[sourceAddress]) ledgerConnectors[sourceAddress] = []
         ledgerConnectors[sourceAddress].push(connectorNames[i])
         if (!ledgerConnectors[targetAddress]) ledgerConnectors[targetAddress] = []
@@ -44,12 +44,13 @@ function * buildServiceGraph (serviceManager, graphConf) {
   }
   for (let i = 0; i < numLedgers; i++) {
     const ledger = demoLedgerName(i)
-    yield graph.startLedger(ledger, 3001 + i,
+    yield graph.startLedger(ledger, 3000 + i,
                             {recommendedConnectors: ledgerConnectors[ledger]})
   }
   yield graph.setupAccounts()
   for (let i = 0; i < numConnectors; i++) {
-    const opts = {edges: connectorEdges[i],
+    const opts = {backend: 'one-to-one',
+                  edges: connectorEdges[i],
                   routeBroadcastInterval: 10 * 1000,
                   routeExpiry: 15 * 1000,
                   integrationTestUri: integrationTestUri,
@@ -119,7 +120,7 @@ function * assertFullReachabilityAndQuietude (graphConfFilename, testThis, done,
                         (reports) => {
                           if (numConnectors !== reports.length) done(new Error('expected ' + numConnectors + ' reports; got: ' + reports.length))
                           else if (!_.every(reports, (report) => uniqueDestinations(report.routes).size === numLedgers)) {
-                            done(new Error(describeReachabilityFailure(reports, numLedgers) + 'reports:\n', reports))
+                            done(new Error(describeReachabilityFailure(reports, numLedgers) + 'reports:\n' + reports))
                           } else if (!_.every(reports, (report) => report.last_new_receive < deadline)) {
                             done(new Error(describeDeadlineFailure(reports, deadline)))
                           } else done()
@@ -138,8 +139,36 @@ describe('Routing', function () {
   })
 
   describe('propagation completes', function () {
+    // todo?: if candidate.json exists (or evironment var set?) test that graph and skip the others
+    it.skip('test-harness graph', function * (done) {
+      yield assertFullReachabilityAndQuietude('candidate.json', this, done, 90000)
+    })
+
+    it.skip('discovered graph; bad liquidity curve in Y', function * (done) {
+      yield assertFullReachabilityAndQuietude('gen1.json', this, done, 120000)
+    })
+
+    it.skip('discovered graph; bad liquidity curve in Y', function * (done) {
+      yield assertFullReachabilityAndQuietude('rnd2_curve_err.json', this, done, 120000)
+    })
+
+    it('4 connector, 5 ledger line', function * (done) {
+      yield assertFullReachabilityAndQuietude('line5.json', this, done, 20000)
+    })
+
+    it('3 connector, 4 ledger 3-legged star', function * (done) {
+      yield assertFullReachabilityAndQuietude('star3.json', this, done, 30000)
+    })
+    it('6 connector, 7 ledger 3-legged star', function * (done) {
+      yield assertFullReachabilityAndQuietude('star6.json', this, done, 45000)
+    })
+
+    it('9 connector, 10 ledger 3-legged star', function * (done) {
+      yield assertFullReachabilityAndQuietude('star9.json', this, done, 90000)
+    })
+
     it('4 node loop', function * (done) {
-      yield assertFullReachabilityAndQuietude('loop4.json', this, done, 30000)
+      yield assertFullReachabilityAndQuietude('loop4.json', this, done, 20000)
     })
     it('13 node loop', function * (done) {
       yield assertFullReachabilityAndQuietude('loop13.json', this, done, 45000)

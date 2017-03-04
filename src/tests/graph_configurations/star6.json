@@ -1,0 +1,41 @@
+{
+  "num_ledgers": 7,
+  "edge_list_map": {
+    "imogen": [
+      {
+        "target": 1,
+        "source": 0
+      }
+    ],
+    "herbert": [
+      {
+        "target": 0,
+        "source": 2
+      }
+    ],
+    "gaiman": [
+      {
+        "target": 0,
+        "source": 3
+      }
+    ],
+    "fforde": [
+      {
+        "target": 1,
+        "source": 4
+      }
+    ],
+    "elison": [
+      {
+        "target": 2,
+        "source": 5
+      }
+    ],
+    "delany": [
+      {
+        "target": 3,
+        "source": 6
+      }
+    ]
+  }
+}
